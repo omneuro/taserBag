@@ -65,9 +65,9 @@ void loop() {
         delay(50);
         j++;
         if(j == 15){                              //Yellow LED blinks quickly 3 times, means it's in registration mode
-          fingerprint.ctrlLED(fingerprint.eFastBlink, fingerprint.eLEDYellow, 3) //Set fingerprint LED ring to always ON in yellow
+          fingerprint.ctrlLED(fingerprint.eFastBlink, fingerprint.eLEDYellow, 3); //Set fingerprint LED ring to always ON in yellow
         }else if(j == 30){                        //Red LED blinks quickly 3 times, means it's in deletion mode
-          fingerprint.ctrlLED(fingerprint.eFastBlink, fingerprint.eLEDRed, 3) //set fingerprint LED ring to always ON in red
+          fingerprint.ctrlLED(fingerprint.eFastBlink, fingerprint.eLEDRed, 3); //set fingerprint LED ring to always ON in red
         }
       }
     }
@@ -112,8 +112,6 @@ void fingerprintRegistration(){
   fingerprint.search();
   if((ID = fingerprint.getEmptyID()) == ERR_ID809){
     while(1){
-      desc = fingerprint.getErrorDescription();
-      Serial.println(desc);
       delay(1000);
     }
   }
@@ -121,7 +119,7 @@ void fingerprintRegistration(){
   Serial.print(ID);
   j = 0;                                //clear sampling times
   while(j < COLLECT_NUMBER){
-    fingerprint.ctrlLED(fingerprint.eBreathing, fingerprint.eLEDBlue, 0)
+    fingerprint.ctrlLED(fingerprint.eBreathing, fingerprint.eLEDBlue, 0);
     Serial.print("The fingerprint sampling of the");
     Serial.print(j+1);
     Serial.println("(th) time is being taken");
@@ -154,12 +152,12 @@ void fingerprintDeletion(){
   uint8_t ret;
   ret = fingerprint.search();
   if(ret){
-    fingerprint.ctrlLED(fingerprint.eKeepsOn, finger.eLEDGreen, 0);
+    fingerprint.ctrlLED(fingerprint.eKeepsOn, fingerprint.eLEDGreen, 0);
     fingerprint.delFingerprint(ret);
     Serial.print("deleted fingerprint, ID=");
     Serial.println(ret);
   }else{
-    fingerprint.ctrlLED(fingerprint.eKeepsOn, finger.eLEDRed, 0);
+    fingerprint.ctrlLED(fingerprint.eKeepsOn, fingerprint.eLEDRed, 0);
     Serial.println("Matching failed or the fingerprint hasn't been registered");
   }
   delay(1000);
