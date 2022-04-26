@@ -139,6 +139,7 @@ void fingerprintRegistration(){
   if(fingerprint.storeFingerprint(ID) != ERR_ID809){
     Serial.print("Saving succeed, ID=");
     Serial.println(ID);
+    Serial.println("Testing");
     fingerprint.ctrlLED(fingerprint.eKeepsOn, fingerprint.eLEDGreen, 0);
     delay(1000);
     fingerprint.ctrlLED(fingerprint.eNormalClose, fingerprint.eLEDRed, 0);

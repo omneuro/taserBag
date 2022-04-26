@@ -17,6 +17,7 @@ radio.startListening();             //ses the modules as a reciever
 
 void loop() {
   if(radio.available()){            //Checking if there is data in the pipe to be recieved
+    Serial.println("The radio is available");
     char text[32] = "";             //Creaing an array of 32 elements called text to save incoming data.
     radio.read(&text, sizeof(text));//Reading and storing the incoming data in a variable called text
     Serial.println(text);           //Printing the incoming data to the screen
