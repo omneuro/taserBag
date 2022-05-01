@@ -1,4 +1,4 @@
-#include <SPI.h>
+#include<SPI.h>
 #include<nRF24L01.h>
 #include<RF24.h>
 #include<DFRobot_ID809.h>
@@ -86,6 +86,8 @@ void loop() {
       fingerprintDeletion();
     }
   }
+  radio.startListening();                       //The remote is now listening to the bag for updates from the battery
+  if()
 }
 
 void fingerprintMatching(){

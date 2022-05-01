@@ -27,10 +27,17 @@ void loop() {
     if(relayState == HIGH){
       digitalWrite(relay,HIGH);
       delay(60000);
+      digitalWrite(relay,LOW);
     }
     else{
       digitalWrite(relay,LOW);
     }
   }
   radio.stopListening();
+  //Check the level of the battery here, trigger the buzzer if critical and send data to the remote to light the Red led.
+
+  //if charging. Turn off buzzer and red light. Once full send data to the remote lighting the Green LED.
+
+  //if full and charger is removed, Send data to the remote to turn off the green light.
+
 }
