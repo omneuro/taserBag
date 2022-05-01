@@ -11,7 +11,8 @@ SoftwareSerial Serial1(2,3); //setting pin 2 and 3 as software serial RX and TX 
 DFRobot_ID809 fingerprint;
 
 RF24 radio(7,8); //creating an RF24 object with arguments being CE, CSN respectively
-const byte address[6] = "00001";   //setting address pipe for transmitting information
+const byte address[][6] = {"00001","00002"} ;   //setting address pipe for transmitting information
+volatile byte relayState = LOW;
 uint8_t enrollCount;              //Number of registered users
 uint8_t list[80] = {0};           //array to hold ID list
 
@@ -49,9 +50,9 @@ void setup() {
   Serial.println("------------------------------------------------");
   //Setting up the transceiver module
   radio.begin();                  //initializing the radio object
-  radio.openWritingPipe(address); //set the address of the reciever to which we will send data
+  radio.openWritingPipe(addresses[1]); //00002
+  radio.openReadingPipe(1,addresses[0]); //00001
   radio.setPALevel(RF24_PA_MIN);  //setting the pwer amplifier level to minimum because the modules will be tested at a close range (note: will set to max after the near range test phase)
-  radio.stopListening();          //sets the module as a transmitter
 }
 
 //Blue LED Comparison mode   Yellow LED Registration mode   Red Deletion mode
@@ -72,6 +73,7 @@ void loop() {
       }
     }
     if(j == 0){
+      Serial.println("no fingerprint detected") // will execute main code here
       //Fingerprint capturing failed
     }else if(j > 0 && j < 15){
       Serial.println("Fingerprint comparison mode");
@@ -93,9 +95,10 @@ void fingerprintMatching(){
     fingerprint.ctrlLED(fingerprint.eKeepsOn, fingerprint.eLEDGreen, 0);
     Serial.print("Successfully matched, ID=");
     Serial.println(ret);
-    const char text[] = "Hello World";
-    radio.write(&text, sizeof(text));
-    delay(1000);
+    delay(10);
+    radio.stopListening();                    //sets the module as a transmitter
+    relayState = HIGH;
+    radio.write(&relayState, sizeof(relayState));
   }else{
     //Set fingerprint LED ring to always ON in red
     fingerprint.ctrlLED(fingerprint.eKeepsOn, fingerprint.eLEDRed, 0);
