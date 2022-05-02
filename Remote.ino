@@ -7,6 +7,8 @@ SoftwareSerial Serial1(2,3); //setting pin 2 and 3 as software serial RX and TX 
 #define FPSerial Serial1
 #define COLLECT_NUMBER 3     //Fingerprint sampling times, can be set to 1-3
 #define IRQ 6               // Interrupt pin set as pin 6
+#define GREENLED 5          //GreenLED is connected to pin 5
+#define REDLED 10           //RedLED is connected to pin 10
 
 DFRobot_ID809 fingerprint;
 
@@ -53,6 +55,9 @@ void setup() {
   radio.openWritingPipe(addresses[1]); //00002
   radio.openReadingPipe(1,addresses[0]); //00001
   radio.setPALevel(RF24_PA_MIN);  //setting the pwer amplifier level to minimum because the modules will be tested at a close range (note: will set to max after the near range test phase)
+  //setting up LED's (Battery level indicator)
+  pinMode(GREENLED, OUTPUT);
+  pinMode(REDLED, OUTPUT);
 }
 
 //Blue LED Comparison mode   Yellow LED Registration mode   Red Deletion mode
@@ -73,7 +78,7 @@ void loop() {
       }
     }
     if(j == 0){
-      Serial.println("no fingerprint detected") // will execute main code here
+      Serial.println("no fingerprint detected"); //will execute main code here
       //Fingerprint capturing failed
     }else if(j > 0 && j < 15){
       Serial.println("Fingerprint comparison mode");
@@ -87,7 +92,7 @@ void loop() {
     }
   }
   radio.startListening();                       //The remote is now listening to the bag for updates from the battery
-  if()
+
 }
 
 void fingerprintMatching(){

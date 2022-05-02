@@ -1,13 +1,16 @@
 #include <SPI.h>
 #include <nRF24L01.h>
 #include <RF24.h>
-
+#define BATTERY 2;
 
 RF24 radio(7,8);//creating an RF24 object with arguments being CE, CSN respectively
 
 const byte addresses[][6] = {"00001","00002"};    //setting address pipe for recieving information
-int relay = 8;                                  //relay on pin D8
+int relay = 8;
+int analogValue = 0;                                  //relay on pin D8
 volatile byte relayState = LOW;
+volatile byte chargeState = LOW;
+volatile byte criticalState = LOW;
 
 void setup() {
   Serial.begin(115200);                 //initializing the serial monitor with baud rate 9600
@@ -35,7 +38,8 @@ void loop() {
   }
   radio.stopListening();
   //Check the level of the battery here, trigger the buzzer if critical and send data to the remote to light the Red led.
-
+  analogValue = analogRead(BATTERY);
+  Serial.println(analogValue);
   //if charging. Turn off buzzer and red light. Once full send data to the remote lighting the Green LED.
 
   //if full and charger is removed, Send data to the remote to turn off the green light.
